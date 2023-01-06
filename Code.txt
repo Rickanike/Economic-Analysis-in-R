@@ -1,0 +1,716 @@
+setwd("C:\\Users\\ricar\\OneDrive\\Escritorio\\R\\Directorio de R")
+BD<- read_excel("Base_de_datos.xlsx")
+Analysis_BD<- BD[,c(1:8)]
+
+Analysis_BD_NonEUR <- Analysis_BD %>% filter(Country %in% c("Bulgaria","Czech Republic","Denmark","Croatia","Hungary","Poland",
+                                             "Romania","Sweden","Switzerland","Norway","United Kingdom"))
+
+Analysis_BD_EUR<- Analysis_BD %>% filter (Country %in% c("Germany","Estonia","Ireland","Spain","France","Italy",
+                                                         "Netherlands","Portugal")) 
+  
+
+Analysis_BD_Tur <- Analysis_BD %>% filter (Country== "Turkey")
+Analysis_BD_RUS <- Analysis_BD %>% filter (Country== "Russia")
+Analysis_BD_USA <- Analysis_BD %>% filter (Country== "United States")
+
+#################### Means ##############
+
+## Inflacion
+
+Mean_inflation_NonEU <- Analysis_BD_NonEUR %>% select(Date,Inflation) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_inflation= mean(Inflation))
+
+Mean_inflationEU<- Analysis_BD_EUR %>% select(Date,Inflation) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_inflation= mean(Inflation))
+
+Mean_inflation_RUS<- Analysis_BD_RUS %>% select(Date,Inflation) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_inflation= mean(Inflation))
+
+Mean_inflation_TUR<- Analysis_BD_Tur %>% select(Date,Inflation) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_inflation= mean(Inflation))
+
+Mean_inflation_USA<- Analysis_BD_USA %>% select(Date,Inflation) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_inflation= mean(Inflation))
+
+## Unemployment
+
+Mean_Unemployment_NonEU<- Analysis_BD_NonEUR %>% select(Date,Unemployment) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_unemployment= mean(Unemployment))
+
+Mean_Unemployment_EU <- Analysis_BD_EUR%>% select(Date,Unemployment) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_unemployment= mean(Unemployment))
+
+Mean_Unemployment_RUS<- Analysis_BD_RUS %>% select(Date,Unemployment) %>% group_by(Date) %>% drop_na() %>% 
+summarize(mean_unemployment= mean(Unemployment))
+
+Mean_Unemployment_TUR<- Analysis_BD_Tur %>% select(Date,Unemployment) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_unemployment= mean(Unemployment))
+
+Mean_Unemployment_USA <- Analysis_BD_USA %>% select(Date,Unemployment) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_unemployment= mean(Unemployment))
+
+### Gasoline prices
+
+Mean_gasoline_NonEU <- Analysis_BD_NonEUR %>%  select(Date,Gasoline_prices_usd_liter) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_gasoline_price= mean(as.numeric(Gasoline_prices_usd_liter)))
+
+Analysis_BD_EUR$Gasoline_prices_usd_liter[Analysis_BD_EUR$Gasoline_prices_usd_liter== "2,2"] <- "2.2"  
+
+  
+Mean_gasoline_EU <- Analysis_BD_EUR %>% select(Date,Gasoline_prices_usd_liter) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_gasoline_price= mean(as.numeric(Gasoline_prices_usd_liter)))
+
+Mean_gasoline_RUS <- Analysis_BD_RUS %>%  select(Date,Gasoline_prices_usd_liter) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_gasoline_price= mean(as.numeric(Gasoline_prices_usd_liter)))
+
+Mean_gasoline_TUR <- Analysis_BD_Tur %>%  select(Date,Gasoline_prices_usd_liter) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_gasoline_price= mean(as.numeric(Gasoline_prices_usd_liter)))
+
+Mean_gasoline_USA <- Analysis_BD_USA %>%  select(Date,Gasoline_prices_usd_liter) %>% group_by(Date) %>% drop_na() %>% 
+  summarize(mean_gasoline_price= mean(as.numeric(Gasoline_prices_usd_liter)))
+
+
+
+################################################ Graficos Inflacion  ############################
+
+ 
+
+##### Individuales NonEU
+
+Individual_inflation_chartNonEU <- ggplot(Analysis_BD_NonEUR, aes(x=Date,y= Inflation,group= Country, color= Country)) + geom_line(size=1) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#F20038", "#E67CE6", "#4053E6", "#A61B1B", "#9E9595", "#53D9BA", "#B4F000", "#FFC505FD", "#000000", "#9A2BC2", "#6AA166"))+
+  labs(title="Inflation: Inflation in Non Eurozone countries", subtitle="Sample of eleven countries")
+
+Individual_inflation_chartNonEU
+
+# General NonEu
+
+Mean_inflation_chartNonEU <- ggplot(Mean_inflation_NonEU, aes(x=Date,y=mean_inflation,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Inflation: Inflation in Non Eurozone countries on average", subtitle="Sample of eight countries")
+
+Mean_inflation_chartNonEU
+
+#  General_EU
+
+Mean_inflation_chartEU <- ggplot(Mean_inflationEU, aes(x=Date,y=mean_inflation,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Inflation: Inflation in Eurozone countries on average", subtitle="Sample of eight countries")
+
+Mean_inflation_chartEU
+
+### Individuales EU
+
+Individual_inflation_chartEU <- ggplot(Analysis_BD_EUR, aes(x=Date,y= Inflation,group= Country, color= Country)) + geom_line(size=1) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#F20038", "#E67CE6", "#4053E6", "#A61B1B", "#9E9595", "#53D9BA", "#B4F000", "#FFC505FD"))+
+  labs(title="Inflation: Inflation in Non Eurozone countries", subtitle="Sample of eight countries")
+
+Individual_inflation_chartEU
+
+
+# Turkey
+
+Mean_inflation_chartTUR <-ggplot(Mean_inflation_TUR, aes(x=Date,y=mean_inflation,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Inflation: Inflation in Turkey", subtitle="Sample as of January 2019")
+
+Mean_inflation_chartTUR 
+
+# USA
+
+Mean_inflation_chartUSA <-ggplot(Mean_inflation_USA, aes(x=Date,y=mean_inflation,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Inflation: Inflation in USA", subtitle="Sample as of January 2019")
+
+Mean_inflation_chartUSA
+
+#Russia
+
+Mean_inflation_chartRUS <-ggplot(Mean_inflation_RUS, aes(x=Date,y=mean_inflation,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Inflation: Inflation in Russia", subtitle="Sample as of January 2019")
+
+Mean_inflation_chartRUS
+
+
+################## Grafico de precios de la gasolina ##################
+
+
+#General NonEU
+
+Mean_gasoline_chartNonEU <- ggplot(Mean_gasoline_NonEU, aes(x=Date,y=mean_gasoline_price,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Gasoline: Gasoline prices in USD in Non Eurozone countries on average", subtitle="Sample of eleven countries")
+
+Mean_gasoline_chartNonEU 
+
+#General EU
+
+Mean_gasoline_chartEU <- ggplot(Mean_gasoline_EU, aes(x=Date,y=mean_gasoline_price,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Gasoline: Gasoline prices in USD in Eurozone countries on average", subtitle="Sample of eight
+       countries")
+
+Mean_gasoline_chartEU
+
+# General Turkey
+
+Mean_gasoline_chartTUR <- ggplot(Mean_gasoline_TUR, aes(x=Date,y=mean_gasoline_price,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Gasoline: Gasoline prices in USD in Turkey  on average", subtitle="Sample as of January 2019")
+
+Mean_gasoline_chartTUR
+
+# General USA
+
+Mean_gasoline_chartUSA <- ggplot(Mean_gasoline_USA, aes(x=Date,y=mean_gasoline_price,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Gasoline: Gasoline prices in USD in USA on average", subtitle="Sample as of January 2019")
+
+Mean_gasoline_chartUSA
+
+# General Russia
+
+Mean_gasoline_chartRUS <- ggplot(Mean_gasoline_RUS, aes(x=Date,y=mean_gasoline_price,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Gasoline: Gasoline prices in USD in Russia on average", subtitle="Sample as of January 2019")
+
+Mean_gasoline_chartRUS
+
+############## Graficos unemployment #################
+
+#General NonEU
+Mean_unemployment_chartNonEU <- ggplot(Mean_Unemployment_NonEU, aes(x=Date,y=mean_unemployment,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Unemployment: Unemployment in Non Eurozone countries on average", subtitle="Sample of eleven countries")
+Mean_unemployment_chartNonEU 
+
+##### Individuales NonEU
+
+Individual_unemployment_chartNonEU <- ggplot(Analysis_BD_NonEUR, aes(x=Date,y= Unemployment,group= Country, color= Country)) + geom_line(size=1) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#F20038", "#E67CE6", "#4053E6", "#A61B1B", "#9E9595", "#53D9BA", "#B4F000", "#FFC505FD", "#000000", "#9A2BC2", "#6AA166"))+
+  labs(title="Unemployment: Unemployment in Non Eurozone countries", subtitle="Sample of eleven countries")
+
+Individual_unemployment_chartNonEU
+
+# General EU
+
+Mean_unemployment_chartEU <- ggplot(Mean_Unemployment_EU, aes(x=Date,y=mean_unemployment,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Unemployment: Unemployment in Eurozone countries on average", subtitle="Sample of eight countries")
+Mean_unemployment_chartEU 
+
+#### Individuales EU
+
+Individual_unemployment_chartEU <- ggplot(Analysis_BD_EUR, aes(x=Date,y= Unemployment,group= Country, color= Country)) + geom_line(size=1) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#F20038", "#E67CE6", "#4053E6", "#A61B1B", "#9E9595", "#53D9BA", "#B4F000", "#FFC505FD", "#000000", "#9A2BC2", "#6AA166"))+
+  labs(title="Unemployment: Unemployment in Eurozone countries", subtitle="Sample of eight countries")
+
+Individual_unemployment_chartEU
+
+## General Turkey
+
+Mean_unemployment_chartTur <- ggplot(Mean_Unemployment_TUR, aes(x=Date,y=mean_unemployment,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Unemployment: Unemployment in Turkey  on average", subtitle="Sample as of 2019")
+Mean_unemployment_chartTUR
+
+## General USA
+
+
+Mean_unemployment_chartUSA <- ggplot(Mean_Unemployment_USA, aes(x=Date,y=mean_unemployment,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Unemployment: Unemployment in USA  on average", subtitle="Sample as of 2019")
+
+Mean_unemployment_chartUSA
+
+## General Russia
+
+Mean_unemployment_chartRUS <- ggplot(Mean_Unemployment_RUS, aes(x=Date,y=mean_unemployment,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Unemployment: Unemployment in Russia  on average", subtitle="Sample as of 2019")
+
+Mean_unemployment_chartRUS
+
+#### Merge of datasets
+
+### Inflation ##c("#FF001E", "#EE00FF", "#1766D4", "#25E004", "#080101")
+
+Mean_inflation_NonEU_MERGE <- cbind(Mean_inflation_NonEU, Region = c(rep("Non Euro zone", times =42)))
+Mean_inflation_EU_MERGE <- cbind(Mean_inflationEU, Region = c(rep("Euro zone", times =42)))
+Mean_inflation_TUR_MERGE <- cbind(Mean_inflation_TUR, Region = c(rep("Turkey", times =42)))
+Mean_inflation_RUS_MERGE <- cbind(Mean_inflation_RUS, Region = c(rep("Russia", times =41)))
+Mean_inflation_USA_MERGE <- cbind(Mean_inflation_USA, Region = c(rep("USA", times =41)))
+
+Merge_inflation_AB<- merge(x = Mean_inflation_NonEU_MERGE, y = Mean_inflation_EU_MERGE, all = TRUE)
+Merge_inflation_ABC<- merge(x = Merge_inflation_AB, y = Mean_inflation_TUR_MERGE, all = TRUE)
+Merge_inflation_ABCD <- merge(x = Merge_inflation_ABC, y = Mean_inflation_RUS_MERGE, all = TRUE)
+Merge_inflation_mean <- merge(x = Merge_inflation_ABCD, y = Mean_inflation_USA_MERGE, all = TRUE)
+
+
+Merge_inflation_chart <- ggplot(Merge_inflation_mean, aes(x=Date,y= mean_inflation,group= Region, color= Region)) + geom_line(size=1.25) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#CF0000", "#740CF2", "#00CF29", "#FF9100", "#050101"))+
+  labs(title="Inflation: Average inflation by region", subtitle="Sample of five regions")
+
+
+Merge_inflation_chart
+
+## Unemployment ##
+
+Mean_unemployment_NonEU_MERGE <- cbind(Mean_Unemployment_NonEU, Region = c(rep("Non Euro zone", times =41)))
+Mean_unemployment_EU_MERGE <- cbind(Mean_Unemployment_EU, Region = c(rep("Euro zone", times =41)))
+Mean_unemployment_TUR_MERGE <- cbind(Mean_Unemployment_TUR, Region = c(rep("Turkey", times =35)))
+Mean_unemployment_RUS_MERGE <- cbind(Mean_Unemployment_RUS, Region = c(rep("Russia", times =0)))
+Mean_unemployment_USA_MERGE <- cbind(Mean_Unemployment_USA, Region = c(rep("USA", times =41)))
+
+Merge_unemployment_AB<- merge(x = Mean_unemployment_NonEU_MERGE, y = Mean_unemployment_EU_MERGE, all = TRUE)
+Merge_unemployment_ABC<- merge(x = Merge_unemployment_AB, y = Mean_unemployment_TUR_MERGE, all = TRUE)
+Merge_unemployment_mean <- merge(x = Merge_unemployment_ABC, y = Mean_unemployment_USA_MERGE, all = TRUE)
+
+Merge_unemployment_chart <- ggplot(Merge_unemployment_mean, aes(x=Date,y= mean_unemployment,group= Region, color= Region)) + geom_line(size=1.25) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#CF0000", "#740CF2", "#00CF29", "#FF9100", "#050101"))+
+  labs(title="Unemployment: Average unemployment by region", subtitle="Sample of five regions")
+
+Merge_unemployment_chart
+
+## Gasoline price @@
+
+Mean_gasoline_NonEU_MERGE <- cbind(Mean_gasoline_NonEU, Region = c(rep("Non Euro zone", times =42)))
+Mean_gasoline_EU_MERGE <- cbind(Mean_gasoline_EU, Region = c(rep("Euro zone", times =42)))
+Mean_gasoline_TUR_MERGE <- cbind(Mean_gasoline_TUR, Region = c(rep("Turkey", times =42)))
+Mean_gasoline_RUS_MERGE <- cbind(Mean_gasoline_RUS, Region = c(rep("Russia", times =42)))
+Mean_gasoline_USA_MERGE <- cbind(Mean_gasoline_USA, Region = c(rep("USA", times =42)))
+
+Merge_gasoline_AB<- merge(x = Mean_gasoline_NonEU_MERGE, y = Mean_gasoline_EU_MERGE, all = TRUE)
+Merge_gasoline_ABC<- merge(x = Merge_gasoline_AB, y = Mean_gasoline_TUR_MERGE, all = TRUE)
+Merge_gasoline_ABCD <- merge(x = Merge_gasoline_ABC, y = Mean_gasoline_RUS_MERGE, all = TRUE)
+Merge_gasoline_mean <- merge(x = Merge_gasoline_ABCD, y = Mean_gasoline_USA_MERGE, all = TRUE)
+
+Merge_gasoline_chart <- ggplot(Merge_gasoline_mean, aes(x=Date,y= mean_gasoline_price,group= Region, color= Region)) + geom_line(size=1.25) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) + 
+  scale_color_manual(values=c("#CF0000", "#740CF2", "#00CF29", "#FF9100", "#050101"))+
+  labs(title="Gasoline price: Average gasoline price by region", subtitle="Sample of five regions using US$ per liter")
+
+Merge_gasoline_chart
+
+#################### Forecast ARIMA ###############
+
+library(lubridate)
+library(forecast)
+
+################### INFLATION #################
+### Non Eu ###
+
+inflation_NonEU_ts<- ts(Mean_inflation_NonEU$mean_inflation, start=c(2019,1), frequency= 12)
+inflation_NonEU_ts
+
+adjust_inflation_NonEU <- auto.arima(y=inflation_NonEU_ts)
+summary(adjust_inflation_NonEU)
+
+prediction_inflation_NonEU <- forecast(adjust_inflation_NonEU)
+
+p_predict_inflation_NonEU <- autoplot(prediction_inflation_NonEU)
+p_predict_inflation_NonEU
+
+prediction_inflation_NonEU_list <- as.data.frame(prediction_inflation_NonEU)
+write.xlsx(prediction_inflation_NonEU_list, 'prediction_inflation_NonEU_list.xlsx')
+
+descom_inflation_NonEU = decompose(inflation_NonEU_ts)
+autoplot(descom_inflation_NonEU)
+acf(inflation_NonEU_ts)
+checkresiduals(adjust_inflation_NonEU)
+
+
+
+### EU ###
+
+inflation_EU_ts<- ts(Mean_inflationEU$mean_inflation, start=c(2019,1), frequency= 12)
+inflation_EU_ts
+
+adjust_inflation_EU <- auto.arima(y=inflation_EU_ts)
+summary(adjust_inflation_EU)
+
+prediction_inflation_EU <- forecast(adjust_inflation_EU)
+
+p_predict_inflation_EU <- autoplot(prediction_inflation_EU)
+p_predict_inflation_EU
+
+prediction_inflation_EU_list <- as.data.frame(prediction_inflation_EU)
+write.xlsx(prediction_inflation_EU_list, 'prediction_inflation_EU_list.xlsx')
+
+### Turkey ###
+
+inflation_TUR_ts<- ts(Mean_inflation_TUR$mean_inflation,start=c(2019,1), frequency= 12)
+inflation_TUR_ts
+
+adjust_inflation_TUR <- auto.arima(y=inflation_TUR_ts)
+summary(adjust_inflation_TUR)
+
+prediction_inflation_TUR <- forecast(adjust_inflation_TUR)
+
+p_predict_inflation_TUR <- autoplot(prediction_inflation_TUR)
+p_predict_inflation_TUR
+
+prediction_inflation_TUR_list <- as.data.frame(prediction_inflation_TUR)
+write.xlsx(prediction_inflation_TUR_list, 'prediction_inflation_TUR_list.xlsx')
+
+### Russia ###
+
+inflation_RUS_ts<- ts(Mean_inflation_RUS$mean_inflation, start=c(2019,1), frequency= 12)
+inflation_RUS_ts
+
+adjust_inflation_RUS <- auto.arima(y=inflation_RUS_ts)
+summary(adjust_inflation_RUS)
+
+prediction_inflation_RUS <- forecast(adjust_inflation_RUS)
+
+p_predict_inflation_RUS <- autoplot(prediction_inflation_RUS)
+p_predict_inflation_RUS
+
+prediction_inflation_RUS_list <- as.data.frame(prediction_inflation_RUS)
+write.xlsx(prediction_inflation_RUS_list, 'prediction_inflation_RUS_list.xlsx')
+
+### USA ### 
+
+inflation_USA_ts<- ts(Mean_inflation_USA$mean_inflation, start=c(2019,1), frequency= 12)
+inflation_USA_ts
+
+adjust_inflation_USA <- auto.arima(y=inflation_USA_ts)
+summary(adjust_inflation_USA)
+
+prediction_inflation_USA <- forecast(adjust_inflation_USA)
+
+p_predict_inflation_USA <- autoplot(prediction_inflation_USA)
+p_predict_inflation_USA
+
+prediction_inflation_USA_list <- as.data.frame(prediction_inflation_USA)
+write.xlsx(prediction_inflation_USA_list, 'prediction_inflation_USA_list.xlsx')
+
+################### Unemployment #################
+
+### Non Eu ###
+
+unemployment_NonEU_ts<- ts(Mean_Unemployment_NonEU$mean_unemployment, start=c(2019,1), frequency= 12)
+unemployment_NonEU_ts
+
+adjust_unemployment_NonEU <- auto.arima(y=unemployment_NonEU_ts)
+summary(adjust_unemployment_NonEU)
+
+prediction_unemployment_NonEU <- forecast(adjust_unemployment_NonEU)
+
+p_predict_unemployment_NonEU <- autoplot(prediction_unemployment_NonEU)
+p_predict_unemployment_NonEU
+
+prediction_unemployment_NonEU_list <- as.data.frame(prediction_unemployment_NonEU)
+write.xlsx(prediction_unemployment_NonEU_list, 'prediction_unemployment_NonEU_list.xlsx')
+
+### Eu ###
+
+unemployment_EU_ts<- ts(Mean_Unemployment_EU$mean_unemployment, start=c(2019,1), frequency= 12)
+unemployment_EU_ts
+
+adjust_unemployment_EU <- auto.arima(y=unemployment_EU_ts)
+summary(adjust_unemployment_EU)
+
+prediction_unemployment_EU <- forecast(adjust_unemployment_EU)
+
+p_predict_unemployment_EU <- autoplot(prediction_unemployment_EU)
+p_predict_unemployment_EU
+
+prediction_unemployment_EU_list <- as.data.frame(prediction_unemployment_EU)
+write.xlsx(prediction_unemployment_EU_list, 'prediction_unemployment_EU_list.xlsx')
+
+## Turkey ##
+
+unemployment_TUR_ts<- ts(Mean_Unemployment_TUR$mean_unemployment, start=c(2019,1), frequency= 12)
+unemployment_TUR_ts
+
+adjust_unemployment_TUR <- auto.arima(y=unemployment_TUR_ts)
+summary(adjust_unemployment_TUR)
+
+prediction_unemployment_TUR <- forecast(adjust_unemployment_TUR)
+
+p_predict_unemployment_TUR <- autoplot(prediction_unemployment_TUR)
+p_predict_unemployment_TUR
+
+prediction_unemployment_TUR_list <- as.data.frame(prediction_unemployment_TUR)
+write.xlsx(prediction_unemployment_TUR_list, 'prediction_unemployment_TUR_list.xlsx')
+
+##Non russian data available ##
+
+## USA ##
+
+unemployment_USA_ts<- ts(Mean_Unemployment_USA$mean_unemployment, start=c(2019,1), frequency= 12)
+unemployment_USA_ts
+
+adjust_unemployment_USA <- auto.arima(y=unemployment_USA_ts)
+summary(adjust_unemployment_USA)
+
+prediction_unemployment_USA <- forecast(adjust_unemployment_USA)
+
+p_predict_unemployment_USA <- autoplot(prediction_unemployment_USA)
+p_predict_unemployment_USA
+
+prediction_unemployment_USA_list <- as.data.frame(prediction_unemployment_USA)
+write.xlsx(prediction_unemployment_USA_list, 'prediction_unemployment_USA_list.xlsx')
+
+################### Gasoline #################
+
+### Non Eu ###
+
+gasoline_NonEU_ts<- ts(Mean_gasoline_NonEU$mean_gasoline_price, start=c(2019,1), frequency= 12)
+gasoline_NonEU_ts
+
+adjust_gasoline_NonEU <- auto.arima(y=gasoline_NonEU_ts)
+summary(adjust_gasoline_NonEU)
+
+prediction_gasoline_NonEU <- forecast(adjust_gasoline_NonEU)
+
+p_predict_gasoline_NonEU <- autoplot(prediction_gasoline_NonEU)
+p_predict_gasoline_NonEU
+
+prediction_gasoline_NonEU_list <- as.data.frame(prediction_gasoline_NonEU)
+write.xlsx(prediction_gasoline_NonEU_list, 'prediction_gasoline_NonEU_list.xlsx')
+
+### Eu ###
+
+gasoline_EU_ts<- ts(Mean_gasoline_EU$mean_gasoline_price, start=c(2019,1), frequency= 12)
+gasoline_EU_ts
+
+adjust_gasoline_EU <- auto.arima(y=gasoline_EU_ts)
+summary(adjust_gasoline_EU)
+
+prediction_gasoline_EU <- forecast(adjust_gasoline_EU)
+
+p_predict_gasoline_EU <- autoplot(prediction_gasoline_EU)
+p_predict_gasoline_EU
+
+prediction_gasoline_EU_list <- as.data.frame(prediction_gasoline_EU)
+write.xlsx(prediction_gasoline_EU_list, 'prediction_gasoline_EU_list.xlsx')
+
+### TURKEY ###
+
+gasoline_TUR_ts<- ts(Mean_gasoline_TUR$mean_gasoline_price, start=c(2019,1), frequency= 12)
+gasoline_TUR_ts
+
+adjust_gasoline_TUR <- auto.arima(y=gasoline_TUR_ts)
+summary(adjust_gasoline_TUR)
+
+prediction_gasoline_TUR <- forecast(adjust_gasoline_TUR)
+
+p_predict_gasoline_TUR <- autoplot(prediction_gasoline_TUR)
+p_predict_gasoline_TUR
+
+prediction_gasoline_TUR_list <- as.data.frame(prediction_gasoline_TUR)
+write.xlsx(prediction_gasoline_TUR_list, 'prediction_gasoline_TUR_list.xlsx')
+
+### Russia ###
+
+gasoline_RUS_ts<- ts(Mean_gasoline_RUS$mean_gasoline_price, start=c(2019,1), frequency= 12)
+gasoline_RUS_ts
+
+adjust_gasoline_RUS <- auto.arima(y=gasoline_RUS_ts)
+summary(adjust_gasoline_RUS)
+
+prediction_gasoline_RUS <- forecast(adjust_gasoline_RUS)
+
+p_predict_gasoline_RUS <- autoplot(prediction_gasoline_RUS)
+p_predict_gasoline_RUS
+
+prediction_gasoline_RUS_list <- as.data.frame(prediction_gasoline_RUS)
+write.xlsx(prediction_gasoline_RUS_list, 'prediction_gasoline_RUS_list.xlsx')
+
+### USA ###
+
+gasoline_USA_ts<- ts(Mean_gasoline_USA$mean_gasoline_price, start=c(2019,1), frequency= 12)
+gasoline_USA_ts
+
+adjust_gasoline_USA <- auto.arima(y=gasoline_USA_ts)
+summary(adjust_gasoline_USA)
+
+prediction_gasoline_USA <- forecast(adjust_gasoline_USA)
+
+p_predict_gasoline_USA <- autoplot(prediction_gasoline_USA)
+p_predict_gasoline_USA
+
+prediction_gasoline_USA_list <- as.data.frame(prediction_gasoline_USA)
+write.xlsx(prediction_gasoline_USA_list, 'prediction_gasoline_USA_list.xlsx')
+
+####################### Correlations ####################
+
+library("ggpubr")
+
+###### Non EU #####
+
+Merge_NonEU_General_A <- merge(x = Mean_inflation_NonEU, y = Mean_Unemployment_NonEU, all = TRUE)
+Merge_NonEU_General<- merge(x = Merge_NonEU_General_A, y = Mean_gasoline_NonEU, all = TRUE)
+Merge_NonEU_General
+
+Cor_inf_unem_NonEU <- ggscatter(Merge_NonEU_General, x = "mean_inflation", y = "mean_unemployment", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Inflation %", ylab = "Unemployment %")
+
+Cor_inf_gas_NonEU <- ggscatter(Merge_NonEU_General, x = "mean_inflation", y = "mean_gasoline_price", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Inflation %", ylab = "Gasoline Price in USD")
+
+
+
+###### EU #####
+
+Merge_EU_General_A <- merge(x = Mean_inflationEU, y = Mean_Unemployment_EU, all = TRUE)
+Merge_EU_General<- merge(x = Merge_EU_General_A, y = Mean_gasoline_EU, all = TRUE)
+Merge_EU_General
+
+Cor_inf_unem_EU <- ggscatter(Merge_EU_General, x = "mean_inflation", y = "mean_unemployment", 
+                                add = "reg.line", conf.int = TRUE, 
+                                cor.coef = TRUE, cor.method = "pearson",
+                                xlab = "Inflation %", ylab = "Unemployment %")
+
+Cor_inf_gas_EU <- ggscatter(Merge_EU_General, x = "mean_inflation", y = "mean_gasoline_price", 
+                               add = "reg.line", conf.int = TRUE, 
+                               cor.coef = TRUE, cor.method = "pearson",
+                               xlab = "Inflation %", ylab = "Gasoline Price in USD")
+
+###### Turkey #####
+
+Merge_TUR_General_A <- merge(x = Mean_inflation_TUR, y = Mean_Unemployment_TUR, all = TRUE)
+Merge_TUR_General<- merge(x = Merge_TUR_General_A, y = Mean_gasoline_TUR, all = TRUE)
+Merge_TUR_General
+
+Cor_inf_unem_TUR <- ggscatter(Merge_TUR_General, x = "mean_inflation", y = "mean_unemployment", 
+                             add = "reg.line", conf.int = TRUE, 
+                             cor.coef = TRUE, cor.method = "pearson",
+                             xlab = "Inflation %", ylab = "Unemployment %")
+
+Cor_inf_gas_TUR <- ggscatter(Merge_TUR_General, x = "mean_inflation", y = "mean_gasoline_price", 
+                            add = "reg.line", conf.int = TRUE, 
+                            cor.coef = TRUE, cor.method = "pearson",
+                            xlab = "Inflation %", ylab = "Gasoline Price in USD")
+
+
+###### Russia #####
+
+Merge_RUS_General_A <- merge(x = Mean_inflation_RUS, y = Mean_Unemployment_RUS, all = TRUE)
+Merge_RUS_General<- merge(x = Merge_RUS_General_A, y = Mean_gasoline_RUS, all = TRUE)
+Merge_RUS_General
+
+Cor_inf_unem_RUS <- ggscatter(Merge_RUS_General, x = "mean_inflation", y = "mean_unemployment", 
+                              add = "reg.line", conf.int = TRUE, 
+                              cor.coef = TRUE, cor.method = "pearson",
+                              xlab = "Inflation %", ylab = "Unemployment %")
+
+Cor_inf_gas_RUS <- ggscatter(Merge_RUS_General, x = "mean_inflation", y = "mean_gasoline_price", 
+                             add = "reg.line", conf.int = TRUE, 
+                             cor.coef = TRUE, cor.method = "pearson",
+                             xlab = "Inflation %", ylab = "Gasoline Price in USD")
+
+
+###### USA #####
+
+Merge_USA_General_A <- merge(x = Mean_inflation_USA, y = Mean_Unemployment_USA, all = TRUE)
+Merge_USA_General<- merge(x = Merge_USA_General_A, y = Mean_gasoline_USA, all = TRUE)
+Merge_USA_General
+
+Cor_inf_unem_USA <- ggscatter(Merge_USA_General, x = "mean_inflation", y = "mean_unemployment", 
+                              add = "reg.line", conf.int = TRUE, 
+                              cor.coef = TRUE, cor.method = "pearson",
+                              xlab = "Inflation %", ylab = "Unemployment %")
+
+Cor_inf_gas_USA <- ggscatter(Merge_USA_General, x = "mean_inflation", y = "mean_gasoline_price", 
+                             add = "reg.line", conf.int = TRUE, 
+                             cor.coef = TRUE, cor.method = "pearson",
+                             xlab = "Inflation %", ylab = "Gasoline Price in USD")
+
+
+###################### Poland Analysis #####################
+
+library("ggpubr")
+Analysis_Poland <- Analysis_BD %>% filter(Country=="Poland")
+
+Cor_poland_inf_FX <- ggscatter(Analysis_Poland, x = "Ex_Rate_Euro", y = "Inflation", 
+                              add = "reg.line", conf.int = TRUE, 
+                              cor.coef = TRUE, cor.method = "pearson",
+                              xlab = "Exchange Rate EUR/PLN %", ylab = "Inflation %")
+
+
+
+Poland_FX <- ggplot(Analysis_Poland, aes(x=Date,y=Ex_Rate_Euro,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Exchange Rate: Exchange Rate EUR/PLN ", subtitle="Data as of january 2019", x = "Date", y= "Exchange EUR/PLN")
+
+USA_FX <- ggplot(Analysis_BD_USA, aes(x=Date,y=Ex_Rate_Euro,group=1)) +  geom_line(colour="blue") + geom_point(colour= "blue")+
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  labs(title="Exchange Rate: Exchange Rate EUR/USD ", subtitle="Data as of january 2019", x = "Date", y= "Exchange EUR/USD")
+
+
+ggarrange(Poland_FX, USA_FX ,ncol = 1, nrow = 2)
+
+
+###################### Monetary base analysis ##########
+
+setwd("C:\\Users\\ricar\\OneDrive\\Escritorio\\R\\Directorio de R")
+MB<- read_excel("Base_Monetaria.xlsx")
+
+### Poland ###
+
+MB_Poland <- MB %>% filter(Country=="Poland")
+
+MB_Poland_desglose <- MB_Poland[,c(3:6)]
+
+
+MB_Poland_Chart <- ggplot(data=MB_Poland , mapping = aes(x=Date)) + 
+  geom_line(mapping = aes(y= M0,color= "M0",group=1)) + 
+  geom_point(mapping = aes(y= M0,color= "M0", group=1)) +
+  geom_line(mapping = aes(y= M1,color= "M1",group=1)) + 
+  geom_point(mapping = aes(y= M1,color= "M1", group=1)) +
+  geom_line(mapping = aes(y= M2,color= "M2",group=1)) + 
+  geom_point(mapping = aes(y= M2,color= "M2", group=1)) +
+  geom_line(mapping = aes(y= M3,color= "M3",group=1)) + 
+  geom_point(mapping = aes(y= M3,color= "M3", group=1)) +
+  scale_color_manual(values = c("M0" = "blue","M1" = "green","M2"= "orange", "M3"="black"))+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  labs(title="Monetary supply in Poland ", subtitle="Data as of january 2019", x = "Date", y= "Millions of PLN")
+
+#### Euro Area ###
+
+MB_Euro <- MB %>% filter(Country=="Euro Area")
+
+
+
+MB_Euro_Chart <- ggplot(data=MB_Euro , mapping = aes(x=Date)) + 
+ 
+  geom_line(mapping = aes(y= M1,color= "M1",group=1)) + 
+  geom_point(mapping = aes(y= M1,color= "M1", group=1)) +
+  geom_line(mapping = aes(y= M2,color= "M2",group=1)) + 
+  geom_point(mapping = aes(y= M2,color= "M2", group=1)) +
+  geom_line(mapping = aes(y= M3,color= "M3",group=1)) + 
+  geom_point(mapping = aes(y= M3,color= "M3", group=1)) +
+  scale_color_manual(values = c("M1" = "green","M2"= "orange", "M3"="black"))+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  labs(title="Monetary supply in the Euro Area ", subtitle="Data as of january 2019", x = "Date", y= "Millions of EUR")
+
+
+### United States ###
+
+MB_USA <- MB %>% filter(Country=="United States")
+
+
+
+MB_USA_Chart <- ggplot(data=MB_USA , mapping = aes(x=Date)) + 
+  
+  geom_line(mapping = aes(y= M1,color= "M1",group=1)) + 
+  geom_point(mapping = aes(y= M1,color= "M1", group=1)) +
+  geom_line(mapping = aes(y= M2,color= "M2",group=1)) + 
+  geom_point(mapping = aes(y= M2,color= "M2", group=1)) +
+  scale_color_manual(values = c("M1" = "black","M2"= "orange"))+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  labs(title="Monetary supply in the United States ", subtitle="Data as of january 2019", x = "Date", y= "Billions of USD")
